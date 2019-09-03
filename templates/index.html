@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+	<head>
+    	<meta charset="UTF-8">
+        <title>Memory test</title>
+        <link href="/static/css/styles.css" rel="stylesheet">
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body class="body">
+        <div class="container">
+            <h1>Memory 	</h1>
+            <p>Test your memory</p>
+        </div>
+
+        <div class="container memoryContainer">
+			<div class="row">
+				<div class="col-md-6 offset-md-3">
+					{{range $i, $item := .}}
+						<div class="row memoryRowDiv">
+							{{range	$index, $elemt := $item}}
+								<div id="c{{$i | T}}{{$index | T}}" class="{{ $elemt | Active}}"></div>
+							{{end}}
+						</div>
+					{{end}}
+          		</div>
+			</div>
+		</div>
+
+        <script type="application/javascript" src="/static/js/jquery-3.4.1.min.js"></script>
+        <script type="text/javascript" src="/static/js/app.js"></script>
+  		<script src="/static/js/bootstrap.min.js"></script>
+	</body>
+</html>
