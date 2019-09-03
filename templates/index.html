@@ -18,7 +18,7 @@
 					{{range $i, $item := .}}
 						<div class="row memoryRowDiv">
 							{{range	$index, $elemt := $item}}
-								<div id="c{{$i | T}}{{$index | T}}" class="{{ $elemt | Active}}"></div>
+								<div id="c{{$i | T}}{{$index | T}}" class=""></div>
 							{{end}}
 						</div>
 					{{end}}
@@ -29,5 +29,33 @@
         <script type="application/javascript" src="/static/js/jquery-3.4.1.min.js"></script>
         <script type="text/javascript" src="/static/js/app.js"></script>
   		<script src="/static/js/bootstrap.min.js"></script>
+        <script>
+            var d = [6][6];
+            for (var i = 1; i<=6; i++){
+                for (var x = 1; x<=6; x++) {
+                    (function (i, x) {
+                        var y = i.toString() + x.toString();
+                        document.getElementById("c"+y).addEventListener("click", function () {
+                            console.log("click", y)
+                        })
+                    })(i, x)
+                }
+            }
+            var socket = new WebSocket("ws://localhost:9000/echo");
+
+            socket.onopen = function () {
+                console.log("socket open")
+            };
+
+            socket.onmessage = function (e) {
+               // output.innerHTML += "Server: " + e.data + "\n";
+                console.log(e.data)
+            };
+
+            function send() {
+                socket.send(input.value);
+                input.value = "";
+            }
+        </script>
 	</body>
 </html>

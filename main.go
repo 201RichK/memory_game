@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/201RichK/memory_game/variable"
 	"honnef.co/go/js/dom"
 	"net/http"
 	"strconv"
@@ -13,7 +14,7 @@ var d = dom.GetWindow().Document()
 func new() {
 	http.Handle("/static", http.FileServer(http.Dir("./public")))
 	time.AfterFunc(2*time.Second, func() {
-		for t := range Matrices {
+		for t := range variable.Matrices {
 			fmt.Println("t", t)
 			activeMatrice(t)
 			time.Sleep(3*time.Second)
@@ -69,51 +70,51 @@ func deactiveMatrice(){
 }
 
 func activeMatrice(y int){
-	for i:=0; i<len(Matrices[y]); i++ {
+	for i:=0; i<len(variable.Matrices[y]); i++ {
 		switch i {
 		case 0:
-			for x:= 0; x<len(Matrices[y][0]); x++ {
-				switch Matrices[y][0][x] {
+			for x:= 0; x<len(variable.Matrices[y][0]); x++ {
+				switch variable.Matrices[y][0][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+1))
 					e1.Class().SetString("active")
 				}
 			}
 		case 1:
-			for x:= 0; x<len(Matrices[y][1]); x++ {
-				switch Matrices[y][1][x] {
+			for x:= 0; x<len(variable.Matrices[y][1]); x++ {
+				switch variable.Matrices[y][1][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+7))
 					e1.Class().SetString("active")
 				}
 			}
 		case 2:
-			for x:= 0; x<len(Matrices[y][2]); x++ {
-				switch Matrices[y][2][x] {
+			for x:= 0; x<len(variable.Matrices[y][2]); x++ {
+				switch variable.Matrices[y][2][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+13))
 					e1.Class().SetString("active")
 				}
 			}
 		case 3:
-			for x:= 0; x<len(Matrices[y][3]); x++ {
-				switch Matrices[y][3][x] {
+			for x:= 0; x<len(variable.Matrices[y][3]); x++ {
+				switch variable.Matrices[y][3][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+19))
 					e1.Class().SetString("active")
 				}
 			}
 		case 4:
-			for x:= 0; x<len(Matrices[y][4]); x++ {
-				switch Matrices[y][4][x] {
+			for x:= 0; x<len(variable.Matrices[y][4]); x++ {
+				switch variable.Matrices[y][4][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+25))
 					e1.Class().SetString("active")
 				}
 			}
 		case 5:
-			for x:= 0; x<len(Matrices[y][5]); x++ {
-				switch Matrices[y][5][x] {
+			for x:= 0; x<len(variable.Matrices[y][5]); x++ {
+				switch variable.Matrices[y][5][x] {
 				case 1:
 					e1 := d.GetElementByID("c"+strconv.Itoa(x+31))
 					e1.Class().SetString("active")
@@ -141,36 +142,36 @@ func verifyUserinput(id, Mid int) bool {
 	l6 := []int{31, 32, 33, 34, 35, 36}
 
 	if idInSlice(id, l1)  {
-		if Matrices[Mid][0][id-1] == 1 {
+		if variable.Matrices[Mid][0][id-1] == 1 {
 			return true
 		}
 	}
 
 	if idInSlice(id, l2) {
-		if Matrices[Mid][1][id - 7] == 1 {
+		if variable.Matrices[Mid][1][id - 7] == 1 {
 			return true
 		}
 	}
 
 	if idInSlice(id, l3) {
-		if Matrices[Mid][2][id - 13] == 1 {
+		if variable.Matrices[Mid][2][id - 13] == 1 {
 			return true
 		}
 	}
 
 	if idInSlice(id, l4) {
-		if Matrices[Mid][3][id-19] == 1 {
+		if variable.Matrices[Mid][3][id-19] == 1 {
 			return true
 		}
 	}
 
 	if idInSlice(id, l5) {
-		if Matrices[Mid][4][id-25] == 1 {
+		if variable.Matrices[Mid][4][id-25] == 1 {
 			return true
 		}
 	}
 	if idInSlice(id, l6) {
-		if Matrices[Mid][5][id-31] == 1 {
+		if variable.Matrices[Mid][5][id-31] == 1 {
 			return true
 		}
 	}
