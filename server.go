@@ -57,37 +57,27 @@ func echo (w http.ResponseWriter, r *http.Request) {
 
 
 		if _ , err := strconv.Atoi(string(msg)); err == nil {
-
 			x, _ := strconv.Atoi(string(msg[0]))
 			t, _ := strconv.Atoi(string(msg[1]))
-			if variable.VerifyInput(1, x, t) {
-				_ = conn.WriteMessage(msgType, []byte("success"))
-				if variable.VerifyFinish(x, t, variable.ActiveMatrice(1) ) {
-					fmt.Println("finish")
-				}
-			} else {
-				_ = conn.WriteMessage(msgType, []byte("fail"))
-			}
+			variable.IsSuccess(0, x, t, msgType, conn)
 		}
 
-		if string(msg) == "ok" {
+		time.AfterFunc(3*time.Second, func() {
+
+			activeMatriceTbl := variable.ActiveMatrice(0)
+			time.Sleep(10*time.Millisecond)
+			msgTbl := strings.Join(activeMatriceTbl, " ")
+
+			if err = conn.WriteMessage(msgType, []byte(msgTbl)); err != nil {
+				return
+			}
 			time.AfterFunc(1*time.Second, func() {
-
-				for index := range variable.Matrices{
-
-					msg := variable.ActiveMatrice(index)
-					time.Sleep(15*time.Second)
-					nmsg := strings.Join(msg, " ")
-					if err = conn.WriteMessage(msgType, []byte(nmsg)); err != nil {
-						return
-					}
-					time.AfterFunc(2*time.Second, func() {
-						_ = conn.WriteMessage(msgType, []byte("stop"))
-					})
-
-				}
-
+				_ = conn.WriteMessage(msgType, []byte("stop"))
 			})
+		})
+
+		if string(msg) == "ok" {
+			fmt.Println("start")
 		}
 	}
 }
