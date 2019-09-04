@@ -17,7 +17,7 @@ func new() {
 		for t := range variable.Matrices {
 			fmt.Println("t", t)
 			activeMatrice(t)
-			time.Sleep(3*time.Second)
+
 			deactiveMatrice()
 
 			addClicklistener(t)

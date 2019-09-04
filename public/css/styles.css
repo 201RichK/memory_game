@@ -33,5 +33,12 @@ success white
 .error{
   background: #b0b4c638 !important;
   transform: rotateX(180deg) translateZ(1px);
+}
 
+.danger {
+  color: red;
+  position: absolute;
+  font-size: x-large;
+  right: 50px;
+  top: 50px;
 }

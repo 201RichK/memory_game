@@ -10,6 +10,7 @@
         <div class="container">
             <h1>Memory 	</h1>
             <p>Test your memory</p>
+            <p id="result" class=""></p>
         </div>
 
         <div class="container memoryContainer">
@@ -36,25 +37,54 @@
                     (function (i, x) {
                         var y = i.toString() + x.toString();
                         document.getElementById("c"+y).addEventListener("click", function () {
+                            socket.send(y);
+                            socket.onmessage = function (e) {
+                                t = e.data.split(" ");
+                                for (i = 0; i < t.length; i++ ) {
+                                    if (t[i] === "success") {
+                                        document.getElementById("c"+y).classList.add("active")
+                                    }else if (t[i] === "fail") {
+                                        document.getElementById("result").classList.add("danger");
+                                        document.getElementById("c"+y).classList.add("error");
+                                        document.getElementById("result").innerHTML = "fail";
+                                    }
+                                }
+                            };
                             console.log("click", y)
                         })
                     })(i, x)
                 }
             }
-            var socket = new WebSocket("ws://localhost:9000/echo");
+            var socket = new WebSocket("ws://localhost:3002/echo");
 
             socket.onopen = function () {
-                console.log("socket open")
+                send("ok")
             };
 
             socket.onmessage = function (e) {
                // output.innerHTML += "Server: " + e.data + "\n";
-                console.log(e.data)
+                t = e.data.split(" ");
+                console.log(t);
+                for (i = 0; i < t.length; i++ ){
+                    if (t[i] === "stop") {
+                        for (var i = 1; i<=6; i++) {
+                            for (var x = 1; x<=6; x++) {
+                                (function (i, x) {
+                                    var y = i.toString() + x.toString();
+                                    document.getElementById("c"+y).classList.remove("active")
+                                })(i, x)
+                            }
+                        }
+                        return
+                    }
+
+                    document.getElementById(t[i]).classList.add("active");
+                }
             };
 
-            function send() {
-                socket.send(input.value);
-                input.value = "";
+            function send(t) {
+                socket.send(t);
+              //  input.value = "";
             }
         </script>
 	</body>

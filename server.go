@@ -6,6 +6,9 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
+	"time"
 )
 
 func init() {
@@ -27,13 +30,13 @@ func main() {
 	http.HandleFunc("/memory", memory)
 	http.HandleFunc("/echo",  echo)
 
-	fmt.Println("run at http://localhost:9000/memory")
-	log.Fatal(http.ListenAndServe(":9000", nil))
+	fmt.Println("run at http://localhost:3002/memory")
+	log.Fatal(http.ListenAndServe(":3002", nil))
 }
 
 func memory(w http.ResponseWriter, r *http.Request){
 	w.Header().Set("Content-Type", "text/html")
-	_ = variable.TPL.ExecuteTemplate(w, "index.html",  variable.Matrices[0])
+	_ = variable.TPL.ExecuteTemplate(w, "index.html",  variable.Matrices[1])
 }
 
 func redirect(w http.ResponseWriter, r *http.Request)  {
@@ -51,18 +54,43 @@ func echo (w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			return
 		}
-		// Print the message to the console
-		fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
 
-		// Write message back to browser
-		mymsg := []byte("je suis la")
-		if err= conn.WriteMessage(msgType, mymsg); err != nil {
-			return
+
+		if _ , err := strconv.Atoi(string(msg)); err == nil {
+
+			x, _ := strconv.Atoi(string(msg[0]))
+			t, _ := strconv.Atoi(string(msg[1]))
+			if variable.VerifyInput(1, x, t) {
+				_ = conn.WriteMessage(msgType, []byte("success"))
+				if variable.VerifyFinish(x, t, variable.ActiveMatrice(1) ) {
+					fmt.Println("finish")
+				}
+			} else {
+				_ = conn.WriteMessage(msgType, []byte("fail"))
+			}
+		}
+
+		if string(msg) == "ok" {
+			time.AfterFunc(1*time.Second, func() {
+
+				for index := range variable.Matrices{
+
+					msg := variable.ActiveMatrice(index)
+					time.Sleep(15*time.Second)
+					nmsg := strings.Join(msg, " ")
+					if err = conn.WriteMessage(msgType, []byte(nmsg)); err != nil {
+						return
+					}
+					time.AfterFunc(2*time.Second, func() {
+						_ = conn.WriteMessage(msgType, []byte("stop"))
+					})
+
+				}
+
+			})
 		}
 	}
 }
-
-
 
 /**
 package main
