@@ -1,44 +1,42 @@
-/*error #b0b4c638
-success white
- */
- .body{
-   background-color: #000;
-   color: #fff;
- }
+.body {
+    background-color: #000;
+    color: #fff
+}
 
 .memoryRowDiv div {
-  background-color: #353966;
-  margin: 0.4%;
-  float: left;
-  width: 79px;
-  height: 79px;
-  border-width: 4.9375px;
-  border-radius: 9.875px;
-  cursor: pointer;
-  transition: transform .3s ease-out,-webkit-transform .3s ease-out;
+    background-color: #353966;
+    margin: .4%;
+    float: left;
+    width: 79px;
+    height: 79px;
+    border-width: 4.9375px;
+    border-radius: 9.875px;
+    cursor: pointer;
+    transition: transform .3s ease-out,-webkit-transform .3s ease-out
 }
 
-.col-centered{
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.col-centered {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
 }
 
-.active{
-  background: #fff !important;
-  transform: rotateX(180deg) translateZ(1px);
-
+.active,.error {
+    transform: rotateX(180deg) translateZ(1px)
 }
 
-.error{
-  background: #b0b4c638 !important;
-  transform: rotateX(180deg) translateZ(1px);
+.active {
+    background: #fff!important
+}
+
+.error {
+    background: #b0b4c638!important
 }
 
 .danger {
-  color: red;
-  position: absolute;
-  font-size: x-large;
-  right: 50px;
-  top: 50px;
+    color: red;
+    position: absolute;
+    font-size: x-large;
+    right: 50px;
+    top: 50px
 }
